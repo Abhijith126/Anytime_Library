@@ -1,0 +1,12 @@
+<header class="header">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <a [routerLink]="['/']">Anytime Library</a>
+      <span class="app-spacer"></span>
+      <button mat-button *ngIf="authenticated && admin"   [routerLink]="['/admin']" >Admin</button>
+      <button mat-button *ngIf="authenticated"  [routerLink]="['/profile/'+ user?.userId]" >Profile</button>
+      <button mat-button *ngIf="authenticated"  (click)="logout()">Logout</button>
+      <button mat-button *ngIf="!authenticated" (click)="login()">Login</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</header>

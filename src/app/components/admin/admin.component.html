@@ -1,0 +1,116 @@
+<div class="container">
+  <div *ngIf="! (issuedBooks && users && books)" class="spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div *ngIf="(issuedBooks && users && books)">
+    <h3>Users</h3>
+    <div *ngIf="users" class="table-responsive">
+      <table class="table" border=1>
+        <thead class="thead-dark">
+          <tr>
+            <th class="text-nowrap" scope="col">#</th>
+            <th class="text-nowrap" scope="col">User Id</th>
+            <th class="text-nowrap" scope="col">Name</th>
+            <th class="text-nowrap" scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="users?.length==0">
+            <td colspan="4" style="text-align: center;">No Records found!</td>
+          </tr>
+          <tr *ngFor="let user of users let i = index" [attr.data-index]="i">
+            <th class="text-nowrap" scope="row">{{i+1}}</th>
+            <td>{{user.userId}}</td>
+            <td>{{user.name}}</td>
+            <td class="text-nowrap">
+              <button mat-icon-button title="Edit user profile" style="color:green;" [routerLink]="['/profile/'+ user?.userId]">
+                <mat-icon aria-label="Edit user profile">edit</mat-icon>
+              </button>
+              <button mat-icon-button title="Delete user profile" style="color:red;" (click)="deleteUser(user)">
+                <mat-icon aria-label="Delete user profile">delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Books</h3>
+    <div *ngIf="books" class="table-responsive">
+      <table class="table" border=1>
+        <thead class="thead-dark">
+          <tr>
+            <th class="text-nowrap" scope="col">#</th>
+            <th class="text-nowrap" scope="col">Book Id</th>
+            <th scope="col">Title</th>
+            <th class="text-nowrap" scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="users?.length==0">
+            <td colspan="4" style="text-align: center;">No Records found!</td>
+          </tr>
+          <tr *ngFor="let book of books let i = index" [attr.data-index]="i">
+            <th class="text-nowrap" scope="row">{{i+1}}</th>
+            <td>{{book.isbn}}</td>
+            <td>{{book.title}}</td>
+            <td class="text-nowrap">
+              <button mat-icon-button title="Edit book details" style="color:green;" [routerLink]="['/edit-book/'+book.isbn]">
+                <mat-icon aria-label="Edit book details">edit</mat-icon>
+              </button>
+              <button mat-icon-button title="Delete this book" style="color:red;" (click)="deleteBook(book)">
+                <mat-icon aria-label="Delete this book">delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" style="text-align: center;">
+              <button [routerLink]="['/add-book']" mat-raised-button class="btn btn-responsive btn-primary">
+                <i class="material-icons">add</i> Add New Book </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Issued Books</h3>
+    <div *ngIf="issuedBooks" class="table-responsive">
+      <table class="table" border=1>
+        <thead class="thead-dark">
+          <tr>
+            <th class="text-nowrap" scope="col">#</th>
+            <th class="text-nowrap" scope="col">Book Title</th>
+            <th class="text-nowrap" scope="col">Author</th>
+            <th class="text-nowrap" scope="col">User Id</th>
+            <th class="text-nowrap" scope="col">User Name</th>
+            <th class="text-nowrap" scope="col">Issued Date</th>
+            <th class="text-nowrap" scope="col">Days left</th>
+            <th class="text-nowrap" scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="issuedBooks?.length==0">
+            <td colspan="8" style="text-align: center;">No Records found!</td>
+          </tr>
+          <tr *ngFor="let issue of issuedBooks let i = index" [attr.data-index]="i">
+            <th class="text-nowrap" scope="row">{{i+1}}</th>
+            <td>{{issue.book?.title}}</td>
+            <td>{{issue.book?.author}}</td>
+            <td>{{issue.user?.userId}}</td>
+            <td class="text-nowrap">{{issue.user?.name}}</td>
+            <td class="text-nowrap">{{issue.issueDate | date:'short'}}</td>
+            <td class="text-nowrap" *ngIf="issue?.issueDate">{{ getDifference(issue?.issueDate)}}</td>
+            <td class="text-nowrap">
+              <button mat-icon-button title="Renew the book for 10 more days" style="color:green;" (click)="renewBook(issue)">
+                <mat-icon aria-label="Renew the book">refresh</mat-icon>
+              </button>
+              <button mat-icon-button title="Return the book" style="color:red;" (click)="returnBook(issue)">
+                <mat-icon aria-label="Return the book">reply</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

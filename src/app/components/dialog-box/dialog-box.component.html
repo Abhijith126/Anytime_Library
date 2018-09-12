@@ -1,0 +1,33 @@
+<div *ngIf="data.title!='Share'">
+  <h2 mat-dialog-title>{{data.title}}</h2>
+  <hr>
+  <mat-dialog-content>
+    {{data.content}}
+    <br>
+  </mat-dialog-content>
+  <hr>
+  <mat-dialog-actions>
+    <button *ngIf='data.button' mat-raised-button class="btn btn-primary" (click)="onConfirm()">Confirm</button>&nbsp;
+    <button *ngIf='data.button' mat-raised-button class="btn btn-primary" (click)="onCancel()">Cancel</button>
+    <button *ngIf='!data.button' mat-raised-button class="btn btn-primary btn-block" (click)="onCancel()">Ok</button>
+  </mat-dialog-actions>
+</div>
+
+
+<div *ngIf="data.title=='Share'">
+  <h2 mat-dialog-title>{{data.title}}</h2>
+  <hr>
+  <mat-dialog-content>
+    {{data.content}}
+    <br>
+    <br>
+    <share-buttons [theme]="'default'" [include]="['facebook','twitter','google','linkedin','pinterest']" [show]="5" [size]="-2"
+      [url]="repoUrl" [title]="'Anytime Library'" [description]="'Share this book'" [image]="imageUrl"></share-buttons>
+    <br>
+    <br>
+  </mat-dialog-content>
+  <hr>
+  <mat-dialog-actions>
+    <button mat-raised-button class="btn btn-primary" (click)="onCancel()">Cancel</button>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,126 @@
+<div class="container">
+    <div *ngIf="!bookDetails" class="spinner">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="details-book" *ngIf="bookDetails">
+        <mat-card>
+            <mat-card-title style="text-align: center">
+                <span class="mat-headline">{{bookDetails.title}}</span>
+            </mat-card-title>
+            <mat-card-content>
+                <div class="left">
+                    <img class="img-responsive" src="{{bookDetails.coverUrl}}" height="400px" />
+                    <br>
+                    <br>
+                    <div style="text-align: center;">
+                        <button mat-mini-fab aria-label="fab" [hidden]="liked" (click)="likeBook(liked)">
+                            <i class="material-icons">thumb_up</i>
+                        </button>
+                        <button mat-mini-fab aria-label="fab" [hidden]="!liked" (click)="likeBook(liked)">
+                            <i class="material-icons">thumb_down</i>
+                        </button>
+                        <b>&nbsp;&nbsp;Likes: {{likeCount}}&nbsp;&nbsp;</b>
+                        <button mat-mini-fab aria-label="fab" (click)="shareBook(bookDetails.coverUrl)">
+                            <i class="material-icons">share</i>
+                        </button>
+                        <b>&nbsp;&nbsp;&nbsp;Share</b>
+                    </div>
+                </div>
+                <div class="right">
+                    <mat-list>
+                        <mat-list-item>
+                            <i class="material-icons">format_list_numbered</i> ISBN:&nbsp;&nbsp;
+                            <b> {{bookDetails.isbn}}</b>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <i class="material-icons">person_pin</i> Author:&nbsp;&nbsp;
+                            <b> {{bookDetails.author}}</b>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <i class="material-icons">collections</i> Category:&nbsp;&nbsp;
+                            <b> {{bookDetails.categories}}</b>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <i class="material-icons">supervisor_account</i> Publisher:&nbsp;&nbsp;
+                            <b> {{bookDetails.publisher}}</b>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <i class="material-icons">date_range</i> Published:&nbsp;&nbsp;
+                            <b> {{bookDetails.year}}</b>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <i class="material-icons">star</i> Rate:&nbsp;&nbsp;
+                            <b>{{bookDetails.ratings}}/5</b>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <i class="material-icons">content_copy</i> No of Copies:&nbsp;&nbsp;
+                            <b>{{bookDetails.count}}</b>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <i class="material-icons">location_on</i> Location:&nbsp;&nbsp;
+                            <b>{{bookDetails.location}}</b>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+                <hr>
+                <br>
+                <mat-toolbar>Description</mat-toolbar>
+                {{bookDetails.description}}
+                <p *ngIf="!bookDetails.description"> No description for this book! </p>
+            </mat-card-content>
+            <br>
+            <mat-card-actions>
+                <button [routerLink]="['/']" mat-raised-button class="btn btn-responsive btn-primary">
+                    <i class="material-icons">view_module</i> All Books </button>
+                <button *ngIf="!issued" (click)="issueBook()" [disabled]='bookDetails.count==0' mat-raised-button class="btn btn-responsive btn-primary">
+                    <i class="material-icons">book</i> Issue Book </button>
+                <button *ngIf="issued" (click)="renewBook()" mat-raised-button class="btn btn-responsive btn-primary">
+                    <i class="material-icons">book</i> Renew Book </button>
+                <button *ngIf="issued" (click)="returnBook()" mat-raised-button class="btn btn-responsive btn-primary">
+                    <i class="material-icons">book</i> Return Book </button>
+                <button *ngIf="admin" [routerLink]="['/edit-book/'+ bookDetails.isbn]" mat-raised-button class="btn btn-responsive btn-primary">
+                    <i class="material-icons">mode_edit</i> Edit </button>
+                <button *ngIf="admin" (click)="deleteBook(bookDetails.isbn)" mat-raised-button class="btn btn-responsive" color="warn">
+                    <i class="material-icons">delete_sweep</i> Delete </button>
+            </mat-card-actions>
+        </mat-card>
+        <br>
+        <mat-card>
+            <mat-card-title style="text-align: center">
+                <span class="mat-headline">Comments</span>
+            </mat-card-title>
+            <mat-card-content>
+                <textarea class="form-control" id="comment" rows="3" name="comment" placeholder="Comments..." [(ngModel)]="comment.description"
+                    required></textarea>
+                <br>
+                <input type="number" min="0" max="5" step="0.1" (keyup)="sliceString(comment.ratings)" class="form-control" name="inputRatings"
+                    id="inputRatings" [(ngModel)]="comment.ratings" placeholder="Rate this book on a scale of 1-5" required>
+            </mat-card-content>
+            <button (click)="submitComments()" mat-raised-button color="primary" [disabled]="!(comment.description && comment.ratings)">
+                Submit Review
+                <i class="material-icons">send</i>
+            </button>
+        </mat-card>
+        <br>
+        <div *ngIf='comments'>
+            <div *ngFor="let comment of comments">
+                <mat-card>
+                    <mat-card-content>
+                        <p style="word-wrap: break-word;"> {{comment?.description}} </p>
+                        <hr>
+                        <p class="commentBottom">
+                            Posted by:
+                            <b>{{comment?.user?.name}}</b> | Posted on:
+                            <i>{{comment?.time | date: 'short'}}</i>
+                            <button *ngIf='admin' mat-icon-button color="warn" title="Delete this comment" (click)="deleteComment(comment.id)">
+                                <mat-icon aria-label="Delete comment">delete</mat-icon>
+                            </button>
+                        </p>
+                    </mat-card-content>
+                </mat-card>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>

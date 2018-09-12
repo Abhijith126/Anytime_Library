@@ -1,0 +1,40 @@
+<div *ngIf="!bookData && authenticated" class="spinner">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="container" *ngIf="bookData && authenticated">
+  <div>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <input type="radio" name="selectValue" [value]=true [(ngModel)]='selectValue'> &nbsp;Title&nbsp;&nbsp;
+          <input type="radio" name="selectValue" [value]=false [(ngModel)]='selectValue'>&nbsp;Author&nbsp;&nbsp;
+        </div>
+      </div>
+      <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search books by Title or Author...">
+    </div>
+  </div>
+  <div class="row itemsBlock">
+    <div class="col-md-4 col-sm-6 col-12" *ngFor="let book of (bookData | filter : searchText : selectValue)">
+      <div class="card">
+        <img class="card-img-top rounded" src="{{book.coverUrl}}" alt="{{book.title}}" height="300px">
+        <div class="card-body">
+          <h5 class="card-title title">{{book.title}}</h5>
+          <div class="aligned-icon">
+            <button mat-button mat-raised-button class="btn-block mat-accent" [routerLink]="['/book-details/'+ book.isbn]">
+              <i class="material-icons">visibility</i> &nbsp;View Details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!authenticated">
+  <div class="appTitleDiv">
+    <br>
+    <h1 class="appTitle"> Welcome to Anytime Library </h1>
+    <h5>Library anytime and anywhere...</h5>
+    <br>
+  </div>
+</div>

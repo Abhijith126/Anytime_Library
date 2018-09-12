@@ -1,0 +1,81 @@
+<div class="container-fluid">
+  <div class="container">
+    <div *ngIf="!bookDetails" class="spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+    <div *ngIf="bookDetails">
+      <div class="alert alert-success text-center" role="alert">
+        Edit Book deatils
+      </div>
+      <form #bookForm="ngForm" *ngIf="bookDetails">
+        <div class="text-center" *ngIf=bookDetails?.coverUrl>
+          <img src="{{bookDetails.coverUrl}}" class="img-fluid rounded" style="height:300px" alt="Image Not Found">
+        </div>
+        <hr>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="inputIsbn">ISBN [13-Digit]</label>
+            <input type="text" class="form-control" id="inputIsbn" name="inputIsbn" [(ngModel)]="bookDetails.isbn" placeholder="EX: 9781781102701"
+              required [disabled]="bookDetails.isbn" title="ISBN will be disabled for Books known ISBN">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputTitle">Book Title</label>
+            <input type="text" class="form-control" id="inputTitle" name="inputTitle" [(ngModel)]="bookDetails.title" placeholder="Book Title"
+              required>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputAuthor">Author</label>
+            <input type="text" class="form-control" id="inputAuthor" name="inputAuthor" [(ngModel)]="bookDetails.author" placeholder="Author"
+              required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="inputCategories">Categories</label>
+            <input type="text" class="form-control" id="inputCategories" name="inputCategories" [(ngModel)]="bookDetails.categories"
+              placeholder="Categories" required>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputPublisher">Publisher</label>
+            <input type="text" class="form-control" id="inputPublisher" name="inputPublisher" [(ngModel)]="bookDetails.publisher" placeholder="Publisher"
+              required>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputYear">Published On</label>
+            <input type="text" class="form-control" name="inputYear" id="inputYear" [(ngModel)]="bookDetails.year" placeholder="Published Year"
+              required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputDescription">Description</label>
+          <textarea class="form-control" id="inputDescription" rows="3" name="inputDescription" [(ngModel)]="bookDetails.description"
+            placeholder="Description of the book..." required></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-2">
+            <label for="inputRatings">Ratings</label>
+            <input type="number" min="1" max="5" step="0.1" class="form-control" name="inputRatings" (keyup)="sliceString(bookDetails.ratings)"
+              id="inputRatings" [(ngModel)]="bookDetails.ratings" placeholder="Ratings" required>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="inputRatings">Book Count</label>
+            <input type="number" min="1" max="100" class="form-control" name="inputCount" id="inputCount" [(ngModel)]="bookDetails.count"
+              placeholder="Copies available" required>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="inputLocation">Location</label>
+            <input type="text" class="form-control" id="inputLocation" name="inputLocation" [(ngModel)]="bookDetails.location" placeholder="Row-Column"
+              required>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputUrl">Cover Image Url</label>
+            <input type="text" class="form-control" id="inputUrl" name="inputUrl" [(ngModel)]="bookDetails.coverUrl" placeholder="Cover Image Url"
+              required>
+          </div>
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-primary btn-block" (click)="updateBook()" [disabled]="!bookForm.form.valid">Update Book In Library</button>
+      </form>
+    </div>
+  </div>
+</div>

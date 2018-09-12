@@ -1,0 +1,133 @@
+<div class="container">
+  <div *ngIf="!userDetails" class="spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div *ngIf="userDetails">
+    <div class="row">
+      <div class="col col-sm col-md col-lg-4 col-xl-4" style="text-align: center; margin-bottom: 20px;">
+        <img alt="User Pic" src="{{userDetails.image}}" height="300px" width="300px" class="img-responsive">
+      </div>
+      <div *ngIf='!editProfile' class="col col-sm col-md col-lg-4 col-xl-4">
+        <table class="table ">
+          <tbody>
+            <tr>
+              <td class="text-nowrap">Name:</td>
+              <td> {{userDetails.name}} </td>
+            </tr>
+            <tr>
+              <td class="text-nowrap">ID:</td>
+              <td> {{userDetails.userId}} </td>
+            </tr>
+            <tr>
+              <td class="text-nowrap">Books Issued:</td>
+              <td> {{15 - userDetails.bookcount}} </td>
+            </tr>
+            <tr>
+              <td class="text-nowrap">Roles: </td>
+              <td class="text-nowrap">
+                <mat-checkbox checked='userDetails.role.admin' [(ngModel)]="userDetails.role.admin" disabled>Admin</mat-checkbox>
+                <mat-checkbox checked='userDetails.role.subscriber' disabled>Subscriber</mat-checkbox>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-nowrap">Fav Books: </td>
+              <td class="text-nowrap">{{userDetails.favBooks}}</td>
+            </tr>
+            <tr>
+              <td class="text-nowrap">Social:</td>
+              <td class="text-nowrap">{{userDetails.socialIds}}</td>
+            </tr>
+            <tr>
+              <td>
+                <button (click)="editProfile=true" mat-raised-button class="btn btn-responsive btn-primary">
+                  <i class="material-icons">mode_edit</i> Edit Details </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf='editProfile' class="col col-sm col-md col-lg-4 col-xl-4">
+        <table class="table ">
+          <tbody>
+            <tr>
+              <td class="text-nowrap">Name:</td>
+              <input type="text" class="form-control" id="name" name="name" [(ngModel)]="userDetails.name" placeholder="Name" required>
+            </tr>
+            <tr>
+              <td class="text-nowrap">ID:</td>
+              <td> {{userDetails.userId}} </td>
+            </tr>
+            <tr>
+              <td class="text-nowrap">Roles: </td>
+              <td class="text-nowrap">
+                <mat-checkbox checked='userDetails.role.admin' [(ngModel)]="userDetails.role.admin">Admin</mat-checkbox>
+                <mat-checkbox checked='userDetails.role.subscriber' disabled>Subscriber</mat-checkbox>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-nowrap">Fav Books: </td>
+              <input type="text" class="form-control" id="favBooks" name="favBooks" [(ngModel)]="userDetails.favBooks" placeholder="Fav Books"
+                required>
+            </tr>
+            <tr>
+              <td class="text-nowrap">Social:</td>
+              <input type="text" class="form-control" id="socialId" name="socialId" [(ngModel)]="userDetails.socialIds" placeholder="Facebook, Twitter etc..."
+                required>
+            </tr>
+            <tr>
+              <td class="text-nowrap">
+                Profile Picture:
+              </td>
+              <input type="text" class="form-control" id="userImage" name="userImage" [(ngModel)]="userDetails.image" placeholder="Facebook, Twitter etc..."
+                required>
+            </tr>
+            <tr>
+              <td>
+                <button (click)="updateUser()" mat-raised-button class="btn btn-responsive btn-primary">
+                  <i class="material-icons">save</i> Save </button>
+              </td>
+              <td>
+                <button (click)="editProfile=false" mat-raised-button class="btn btn-responsive" color="warn">
+                  <i class="material-icons">cancel</i> Cancel </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <hr>
+    <h3>Issued Books</h3>
+    <div *ngIf="userDetails" class="table-responsive">
+      <table class="table" border=1>
+        <thead class="thead-dark">
+          <tr>
+            <th class="text-nowrap" scope="col">#</th>
+            <th class="text-nowrap" scope="col">Book Title</th>
+            <th class="text-nowrap" scope="col">Issued On</th>
+            <th class="text-nowrap" scope="col">Days left</th>
+            <th class="text-nowrap" scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="issuedBooks?.length==0">
+            <td colspan="5" style="text-align: center;">No Records found!</td>
+          </tr>
+          <tr *ngFor="let issue of issuedBooks let i = index" [attr.data-index]="i">
+            <th class="text-nowrap" scope="row">{{i+1}}</th>
+            <td>{{issue.book?.title}}</td>
+            <td class="text-nowrap">{{issue.issueDate | date:'short'}}</td>
+            <td class="text-nowrap" *ngIf="issue?.issueDate">{{ getDifference(issue?.issueDate)}}</td>
+            <td class="text-nowrap">
+              <button mat-icon-button title="Renew the book for 10 more days" style="color:green;" (click)="renewBook(issue)">
+                <mat-icon aria-label="Renew the book">refresh</mat-icon>
+              </button>
+              <button mat-icon-button title="Return the book" style="color:red;" (click)="returnBook(issue)">
+                <mat-icon aria-label="Return the book">reply</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

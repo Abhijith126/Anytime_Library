@@ -1,0 +1,32 @@
+.left {
+    padding: 25px;
+    float: left
+}
+
+.right {
+    float: left;
+    padding: 25px;
+}
+
+.commentBottom {
+    font-size: 10px;
+    color: #254;
+    margin-top: -15px;
+}
+
+@media (max-width: 768px) {
+    .btn-responsive {
+        padding: 2px 4px;
+        font-size: 70%;
+        line-height: 1;
+        border-radius: 3px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+    .btn-responsive {
+        padding: 4px 9px;
+        font-size: 90%;
+        line-height: 1.2;
+    }
+}
